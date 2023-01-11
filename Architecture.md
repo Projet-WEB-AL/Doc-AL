@@ -49,6 +49,7 @@ For monitoring we used Grafana, Prometheus and InfluxDB which are simple solutio
 1. Connection problem between the backend and the database [Solved] -> Big waste of project time
 2. Connection problem between the backend and the frontend [half  Solved] (need to use chromium on linux ???!) -> waste of project time
 3. Cannot send mail with Quarkus [ Open ]
-4. Grafana Problemes with datasources plugins internals errors.
+4. Problem in Ngnix impossible to add rabbitmq, adminer and graphana internally. For functional purposes the ports were left open.
+5. Grafana Problemes with datasources plugins internals errors.
   Cant load the datasource when querying in the graphs 
-5. Grafana Problemes with influxDB connection.
+6. Grafana Problemes with influxDB connection.
