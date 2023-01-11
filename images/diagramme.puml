@@ -1,0 +1,64 @@
+@startuml deployment
+
+artifact "Docker network" as docker_network {
+  component Nginx as Ng
+  database  MySQL as SQL
+  component RabbitMQ as RMQ
+  queue email_queue as EQ
+  component "Quarkus Mail service" as QK
+  component Maildev as MD
+  component Backend as BE
+  component "Nginx Frontend" as NF
+
+  artifact Monitoring {
+    component Prometheus as PM
+    component Grafana as GF
+    component InfluxDB as IF
+    component K6 as K6
+
+    IF <-- K6
+    GF -(0- IF : Data
+    IF -0)- PM : Data
+  }
+
+  artifact LoadTesting {
+    component Prometheus as PM1
+    component Grafana as GF1
+    component InfluxDB as IF1
+    component K6 as K61
+
+    IF1 <-- K61
+    GF1 -(0- IF1 : Data
+    IF1 -0)- PM1 : Data
+
+
+  }
+  
+  interface "Get info" as GET
+
+  K6 -0)- Ng : HTTP
+  
+
+
+  QK .> MD : send email
+  
+  BE -0)-> EQ : Producer
+  RMQ .> EQ : manage queue
+  QK -0)-> EQ : Consumer
+  BE -> SQL
+
+  K61 -0)- Ng : HTTP
+  
+  PM1 --> GET
+  PM --> GET 
+  GET --0)-> QK 
+  GET --0)-> RMQ 
+  Ng <-(0-  GET 
+  GET -0)-> BE
+
+  Ng <-(0- BE : HTTP /api
+  Ng <-(0- NF : HTTP /
+
+}
+
+@enduml
